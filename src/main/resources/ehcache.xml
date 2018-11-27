@@ -1,0 +1,55 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<ehcache xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation = "http://ehcache.org/ehcache.xsd" name = "intergalacticaCacheManager" updateCheck = "false">
+
+	<diskStore path = "/var/cache/api/intergalactica" />
+
+
+	<defaultCache																			eternal                   = "true"
+																							maxElementsInMemory       = "500"
+																							overflowToDisk            = "false"
+																							memoryStoreEvictionPolicy = "LFU" />
+
+	<!-- Standard Hibernate Caches -->
+
+	<cache name = "org.hibernate.cache.internal.StandardQueryCache"							eternal             = "false"
+																							maxElementsInMemory = "50000"
+																							timeToLiveSeconds   = "1200"
+																							overflowToDisk      = "false" />
+
+	<cache name = "org.hibernate.cache.spi.UpdateTimestampsCache"							eternal             = "false"
+																							maxElementsInMemory = "50000"
+																							timeToLiveSeconds   = "1200"
+																							overflowToDisk      = "false" />
+
+
+	<!-- Hibernate Entity Caches  -->
+
+	<cache name = "io.codelirium.blueground.intergalactica.model.entity.ColonistEntity" 	eternal             = "false"
+																							maxElementsInMemory = "50000"
+																							timeToLiveSeconds   = "600"
+																							timeToIdleSeconds   = "0"
+																							overflowToDisk      = "false" />
+
+	<cache name = "io.codelirium.blueground.intergalactica.model.entity.UnitEntity" 		eternal             = "false"
+																							maxElementsInMemory = "50000"
+																							timeToLiveSeconds   = "600"
+																							timeToIdleSeconds   = "0"
+																							overflowToDisk      = "false" />
+
+
+	<!-- Other Caches -->
+
+	<cache name = "colonist-by-intergalactic-id"											eternal             = "false"
+																							maxElementsInMemory = "50000"
+																							timeToLiveSeconds   = "600"
+																							timeToIdleSeconds   = "0"
+																							overflowToDisk      = "false" />
+
+	<cache name = "unit-by-search-term"														eternal             = "false"
+																							maxElementsInMemory = "50000"
+																							timeToLiveSeconds   = "600"
+																							timeToIdleSeconds   = "0"
+																							overflowToDisk      = "false" />
+
+</ehcache>

@@ -1,2 +1,2 @@
 # intergalactica
-An intergalactic unit service with JWT and push notifications.
+An API offering luxurious martian property units to homo universalis and other intergalactic beings.
