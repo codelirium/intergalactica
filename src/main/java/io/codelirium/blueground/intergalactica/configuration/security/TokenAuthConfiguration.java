@@ -5,7 +5,7 @@ import io.codelirium.blueground.intergalactica.service.security.TokenAuthenticat
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
@@ -56,16 +56,28 @@ public class TokenAuthConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 
-	@Bean
-	public TokenAuthenticationFilter authFilter() {
+	@Inject
+	public void configurePreAuthenticationProvider(final AuthenticationManagerBuilder auth) throws Exception {
 
-		return new TokenAuthenticationFilter();
+		auth.authenticationProvider(preAuthProvider());
 
 	}
 
 
 	@Bean
-	public AuthenticationProvider preAuthProvider() throws Exception {
+	public TokenAuthenticationFilter authFilter() throws Exception {
+
+		final TokenAuthenticationFilter filter = new TokenAuthenticationFilter();
+
+		filter.setAuthenticationManager(authenticationManager());
+
+
+		return filter;
+	}
+
+
+	@Bean
+	public PreAuthenticatedAuthenticationProvider preAuthProvider() throws Exception {
 
 		final PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
 

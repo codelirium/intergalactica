@@ -51,13 +51,29 @@ public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
 	@Override
 	public String getUsername() {
 
+		return super.getUsername();
+
+	}
+
+
+	public String getIntergalacticId() {
+
 		return super.getIntergalacticId();
 
 	}
 
 
 	@Override
+	@JsonIgnore
 	public String getPassword() {
+
+		return super.getPasswordHash();
+
+	}
+
+
+	@JsonIgnore
+	public String getPasswordHash() {
 
 		return super.getPasswordHash();
 
