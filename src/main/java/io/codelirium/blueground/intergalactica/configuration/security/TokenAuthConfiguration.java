@@ -57,7 +57,7 @@ public class TokenAuthConfiguration extends WebSecurityConfigurerAdapter {
 
 
 	@Inject
-	public void configurePreAuthenticationProvider(final AuthenticationManagerBuilder auth) throws Exception {
+	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
 
 		auth.authenticationProvider(preAuthProvider());
 
