@@ -38,10 +38,12 @@ public class TokenAuthConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 
+		final String colonistsEndpoint = format("%s%s", API_PATH_ROOT, API_ENDPOINT_COLONISTS);
+
 		http
-			.antMatcher(format("%s%s", API_PATH_ROOT, API_ENDPOINT_COLONISTS))
+			.antMatcher(colonistsEndpoint)
 				.authorizeRequests()
-			.antMatchers(POST, format("%s%s", API_PATH_ROOT, API_ENDPOINT_COLONISTS))
+			.antMatchers(POST, colonistsEndpoint)
 				.anonymous()
 				.anyRequest()
 					.authenticated()
