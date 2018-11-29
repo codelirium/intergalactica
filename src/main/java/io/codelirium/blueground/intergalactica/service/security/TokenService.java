@@ -24,8 +24,8 @@ import static org.springframework.util.Assert.notNull;
 @SecurityService
 public class TokenService {
 
-	static final String FIELD_USER  = "user";
-	static final String FIELD_ROLE  = "role";
+	public static final String FIELD_USER  = "user";
+	public static final String FIELD_ROLE  = "role";
 
 
 	private TokenProperties tokenProperties;

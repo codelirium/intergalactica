@@ -1,5 +1,6 @@
 package io.codelirium.blueground.intergalactica.util.mapper;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
 import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
@@ -11,6 +12,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import static io.codelirium.blueground.intergalactica.service.security.TokenService.FIELD_ROLE;
+import static io.codelirium.blueground.intergalactica.service.security.TokenService.FIELD_USER;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.util.Assert.notNull;
@@ -29,6 +32,28 @@ public class MapperUtil {
 
 		return new TokenDTO(token);
 
+	}
+
+
+	public static TokenDTO toTokenDTO(final DecodedJWT token, final String credentials) {
+
+		notNull(token, "The decoded JWT cannot be null.");
+		notNull(credentials, "The credentials cannot be null.");
+
+
+		return new TokenDTO.Builder()
+				.with($ -> {
+					$.username        = token.getSubject();
+					$.intergalacticId = token.getClaim(FIELD_USER).asString();
+					$.passwordHash    = credentials;
+					$.token           = token.getToken();
+					$.authorities     = token.getClaim(FIELD_ROLE)
+												.asList(String.class)
+																.stream()
+																	.map(SimpleGrantedAuthority::new)
+																	.collect(toList());
+				})
+				.build();
 	}
 
 
