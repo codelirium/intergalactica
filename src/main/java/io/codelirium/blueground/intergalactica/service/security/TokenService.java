@@ -2,6 +2,7 @@ package io.codelirium.blueground.intergalactica.service.security;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.codelirium.blueground.intergalactica.configuration.security.component.TokenProperties;
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
@@ -14,7 +15,6 @@ import java.time.LocalDateTime;
 
 import static com.auth0.jwt.JWT.create;
 import static com.auth0.jwt.JWT.require;
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static java.time.LocalDateTime.now;
 import static java.time.ZoneId.systemDefault;
 import static java.util.Date.from;
@@ -44,7 +44,7 @@ public class TokenService {
 
 		this.issuer = issuer;
 
-		this.algorithm = HMAC512(tokenProperties.getSecret());
+		this.algorithm = Algorithm.HMAC512(tokenProperties.getSecret());
 
 		this.verifier = require(algorithm).acceptExpiresAt(0).build();
 
@@ -73,7 +73,7 @@ public class TokenService {
 	}
 
 
-	public DecodedJWT decode(final String token) {
+	public DecodedJWT decode(final String token) throws JWTVerificationException {
 
 		notNull(token, "The token cannot be null.");
 

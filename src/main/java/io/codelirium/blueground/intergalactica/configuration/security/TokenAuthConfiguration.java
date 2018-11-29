@@ -1,5 +1,6 @@
 package io.codelirium.blueground.intergalactica.configuration.security;
 
+import io.codelirium.blueground.intergalactica.configuration.security.component.AccessAuthenticationEntryPoint;
 import io.codelirium.blueground.intergalactica.configuration.security.filter.TokenAuthenticationFilter;
 import io.codelirium.blueground.intergalactica.service.security.TokenAuthenticationService;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import javax.inject.Inject;
 
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_ENDPOINT_COLONISTS;
@@ -26,11 +28,16 @@ public class TokenAuthConfiguration extends WebSecurityConfigurerAdapter {
 
 	private TokenAuthenticationService tokenAuthenticationService;
 
+	private AccessAuthenticationEntryPoint accessAuthenticationEntryPoint;
+
 
 	@Inject
-	public TokenAuthConfiguration(final TokenAuthenticationService tokenAuthenticationService) {
+	public TokenAuthConfiguration(final TokenAuthenticationService tokenAuthenticationService,
+								  final AccessAuthenticationEntryPoint accessAuthenticationEntryPoint) {
 
 		this.tokenAuthenticationService = tokenAuthenticationService;
+
+		this.accessAuthenticationEntryPoint = accessAuthenticationEntryPoint;
 
 	}
 
@@ -47,6 +54,9 @@ public class TokenAuthConfiguration extends WebSecurityConfigurerAdapter {
 				.anonymous()
 				.anyRequest()
 					.authenticated()
+			.and()
+				.exceptionHandling()
+					.defaultAuthenticationEntryPointFor(accessAuthenticationEntryPoint, new AntPathRequestMatcher(colonistsEndpoint))
 			.and()
 				.addFilterBefore(authFilter(), RequestHeaderAuthenticationFilter.class)
 				.authenticationProvider(preAuthProvider())

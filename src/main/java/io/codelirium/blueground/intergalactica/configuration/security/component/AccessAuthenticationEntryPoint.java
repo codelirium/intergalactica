@@ -16,7 +16,6 @@ import java.io.IOException;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.failure;
 import static java.lang.String.valueOf;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Objects.nonNull;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -58,7 +57,7 @@ public class AccessAuthenticationEntryPoint extends BasicAuthenticationEntryPoin
 
 			LOGGER.debug("Building custom {} response body ...", httpStatusCode);
 
-			final RESTFailureResponseBody<String> body = failure(httpStatusCode, nonNull(e.getCause()) ? e.getCause().getMessage() : e.getMessage());
+			final RESTFailureResponseBody<String> body = failure(httpStatusCode, e.getMessage());
 
 			LOGGER.debug("Custom {} response body was built successfully.", httpStatusCode);
 

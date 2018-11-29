@@ -1,8 +1,9 @@
 package io.codelirium.blueground.intergalactica.service.security;
 
-import com.auth0.jwt.exceptions.InvalidClaimException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.codelirium.blueground.intergalactica.service.annotations.SecurityService;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,7 +31,7 @@ public class TokenAuthenticationService implements AuthenticationUserDetailsServ
 
 
 	@Override
-	public UserDetails loadUserDetails(final PreAuthenticatedAuthenticationToken authentication) throws UsernameNotFoundException {
+	public UserDetails loadUserDetails(final PreAuthenticatedAuthenticationToken authentication) throws AuthenticationException {
 
 		notNull(authentication, "The authentication cannot be null.");
 
@@ -43,7 +44,7 @@ public class TokenAuthenticationService implements AuthenticationUserDetailsServ
 
 				token = tokenService.decode((String) authentication.getPrincipal());
 
-			} catch (final InvalidClaimException e) {
+			} catch (final JWTVerificationException e) {
 
 				throw new UsernameNotFoundException("The token is not valid.");
 
