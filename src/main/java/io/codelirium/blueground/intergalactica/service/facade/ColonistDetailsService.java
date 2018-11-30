@@ -1,7 +1,7 @@
 package io.codelirium.blueground.intergalactica.service.facade;
 
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
-import io.codelirium.blueground.intergalactica.service.annotations.FacadeService;
+import io.codelirium.blueground.intergalactica.service.annotation.FacadeService;
 import io.codelirium.blueground.intergalactica.service.business.ColonistService;
 import io.codelirium.blueground.intergalactica.service.security.TokenService;
 import org.springframework.security.core.userdetails.UserDetails;

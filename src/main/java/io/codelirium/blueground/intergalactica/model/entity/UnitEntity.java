@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 
+import static io.codelirium.blueground.intergalactica.model.entity.base.PersistableBaseEntity.COLUMN_NAME_ID;
 import static io.codelirium.blueground.intergalactica.model.entity.base.PersistableBaseEntity.FIELD_NAME_ID;
 
 
@@ -20,14 +21,13 @@ import static io.codelirium.blueground.intergalactica.model.entity.base.Persista
 @NoArgsConstructor
 @EqualsAndHashCode
 @Table(name = UnitEntity.TABLE_NAME)
-@AttributeOverride(name = FIELD_NAME_ID, column = @Column(name = UnitEntity.COLUMN_NAME_ID))
+@AttributeOverride(name = FIELD_NAME_ID, column = @Column(name = COLUMN_NAME_ID))
 public class UnitEntity extends PersistableBaseEntity<Long> implements Serializable {
 
 	private static final long serialVersionUID = -2589170530443760063L;
 
 
-			static final String TABLE_NAME     = "UNITS";
-	public  static final String COLUMN_NAME_ID = "ID";
+	static final String TABLE_NAME = "UNITS";
 
 
 	@Column(name = "IMAGE", nullable = false)

@@ -1,7 +1,7 @@
 package io.codelirium.blueground.intergalactica.service.security;
 
 import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
-import io.codelirium.blueground.intergalactica.service.annotations.SecurityService;
+import io.codelirium.blueground.intergalactica.service.annotation.SecurityService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;

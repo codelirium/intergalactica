@@ -17,7 +17,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode
 public abstract class PersistableBaseEntity<ID extends Serializable> {
 
-	public static final String FIELD_NAME_ID = "id";
+	public static final String FIELD_NAME_ID  = "id";
+	public static final String COLUMN_NAME_ID = "ID";
+
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

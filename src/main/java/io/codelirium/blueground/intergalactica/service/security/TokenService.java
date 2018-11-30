@@ -6,7 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.codelirium.blueground.intergalactica.configuration.security.component.TokenProperties;
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
-import io.codelirium.blueground.intergalactica.service.annotations.SecurityService;
+import io.codelirium.blueground.intergalactica.service.annotation.SecurityService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.inject.Inject;

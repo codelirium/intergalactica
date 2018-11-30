@@ -2,7 +2,7 @@ package io.codelirium.blueground.intergalactica.service.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import io.codelirium.blueground.intergalactica.service.annotations.SecurityService;
+import io.codelirium.blueground.intergalactica.service.annotation.SecurityService;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.AuthenticationUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;

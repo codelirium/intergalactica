@@ -2,7 +2,7 @@ package io.codelirium.blueground.intergalactica.service.business;
 
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
 import io.codelirium.blueground.intergalactica.repository.ColonistRepository;
-import io.codelirium.blueground.intergalactica.service.annotations.BusinessService;
+import io.codelirium.blueground.intergalactica.service.annotation.BusinessService;
 import io.codelirium.blueground.intergalactica.util.mapper.MapperUtil;
 import org.slf4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,5 +1,6 @@
 package io.codelirium.blueground.intergalactica.controller.handler.security;
 
+import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotGenerateTokenException;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException;
 import io.codelirium.blueground.intergalactica.controller.handler.business.ColonistController;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
 import java.util.Optional;
 
 import static io.codelirium.blueground.intergalactica.controller.exception.CannotGenerateTokenException.MESSAGE_CANNOT_GENERATE_TOKEN;
-import static io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException.MESSAGE_CANNOT_GET_TOKEN_DETAILS;
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException.MESSAGE_INVALID_OR_MISSING_TOKEN;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.*;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
 import static io.codelirium.blueground.intergalactica.util.mapper.MapperUtil.toPlainToken;
@@ -24,7 +25,7 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-@RestController
+@SecureRestController
 @RequestMapping(API_PATH_ROOT)
 public class TokenAuthController {
 
@@ -74,7 +75,7 @@ public class TokenAuthController {
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 
-			throw new CannotGetTokenDetailsException(MESSAGE_CANNOT_GET_TOKEN_DETAILS);
+			throw new CannotGetTokenDetailsException(MESSAGE_INVALID_OR_MISSING_TOKEN);
 
 		}
 

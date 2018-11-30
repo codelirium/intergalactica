@@ -1,36 +1,46 @@
 package io.codelirium.blueground.intergalactica.controller.handler.business;
 
+import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException;
+import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
 import io.codelirium.blueground.intergalactica.model.dto.pagination.PagedSearchDTO;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTSuccessResponseBody;
 import io.codelirium.blueground.intergalactica.service.business.UnitService;
+import io.codelirium.blueground.intergalactica.service.security.SecurityContextService;
 import org.slf4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.util.Collection;
+import java.util.Optional;
 
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException.MESSAGE_INVALID_OR_MISSING_TOKEN;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.*;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
 import static io.codelirium.blueground.intergalactica.model.entity.UnitEntity.COLUMN_NAME_ID;
+import static java.util.Objects.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-@RestController
+@SecureRestController
 @RequestMapping(API_PATH_ROOT)
 public class UnitController {
 
 	private static final Logger LOGGER = getLogger(UnitController.class);
 
 
+	private SecurityContextService securityContextService;
+
 	private UnitService unitService;
 
 
 	@Inject
-	public UnitController(final UnitService unitService) {
+	public UnitController(final SecurityContextService securityContextService, final UnitService unitService) {
+
+		this.securityContextService = securityContextService;
 
 		this.unitService = unitService;
 
@@ -40,6 +50,15 @@ public class UnitController {
 	@ResponseStatus(OK)
 	@GetMapping(value = API_ENDPOINT_UNITS_PAGED, produces = APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<UnitDTO>> getAllPaged(@PathVariable(PATH_PARAM_PAGE) final int page) {
+
+		final Optional<TokenDTO> optionalTokenDTO = securityContextService.getPrincipal();
+
+		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
+
+			throw new CannotGetUnitsException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+
+		}
+
 
 		final PagedSearchDTO searchDTO = new PagedSearchDTO(page, COLUMN_NAME_ID);
 
@@ -52,7 +71,7 @@ public class UnitController {
 
 		} catch (final Exception e) {
 
-			throw new CannotGetUnitsException(e.getMessage(), e.getCause());
+			throw new CannotGetUnitsException(e.getMessage());
 
 		}
 
@@ -73,6 +92,15 @@ public class UnitController {
 	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<UnitDTO>> searchByTermPaged( @PathVariable(PATH_PARAM_PAGE) final int page,
 																							 @RequestParam(REQ_PARAM_SEARCH_TERM) final String searchTerm) {
 
+		final Optional<TokenDTO> optionalTokenDTO = securityContextService.getPrincipal();
+
+		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
+
+			throw new CannotGetUnitsException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+
+		}
+
+
 		final PagedSearchDTO searchDTO = new PagedSearchDTO(page, COLUMN_NAME_ID);
 
 
@@ -84,7 +112,7 @@ public class UnitController {
 
 		} catch (final Exception e) {
 
-			throw new CannotGetUnitsException(e.getMessage(), e.getCause());
+			throw new CannotGetUnitsException(e.getMessage());
 
 		}
 

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static io.codelirium.blueground.intergalactica.model.entity.base.PersistableBaseEntity.COLUMN_NAME_ID;
 import static io.codelirium.blueground.intergalactica.model.entity.base.PersistableBaseEntity.FIELD_NAME_ID;
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -19,14 +20,13 @@ import static javax.persistence.FetchType.EAGER;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = ColonistEntity.TABLE_NAME)
-@AttributeOverride(name = FIELD_NAME_ID, column = @Column(name = ColonistEntity.COLUMN_NAME_ID))
+@AttributeOverride(name = FIELD_NAME_ID, column = @Column(name = COLUMN_NAME_ID))
 public class ColonistEntity extends PersistableBaseEntity<Long> implements Serializable {
 
 	private static final long serialVersionUID = -2589170530443760064L;
 
 
 			static final String TABLE_NAME                   = "COLONISTS";
-			static final String COLUMN_NAME_ID               = "ID";
 	private static final String COLUMN_NAME_INTERGALACTIC_ID = "INTERGALACTIC_ID";
 
 

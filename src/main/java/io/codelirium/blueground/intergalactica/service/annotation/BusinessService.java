@@ -1,4 +1,4 @@
-package io.codelirium.blueground.intergalactica.service.annotations;
+package io.codelirium.blueground.intergalactica.service.annotation;
 
 import org.springframework.stereotype.Service;
 

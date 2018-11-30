@@ -4,7 +4,7 @@ import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
 import io.codelirium.blueground.intergalactica.model.dto.pagination.PagedSearchDTO;
 import io.codelirium.blueground.intergalactica.model.entity.UnitEntity;
 import io.codelirium.blueground.intergalactica.repository.UnitRepository;
-import io.codelirium.blueground.intergalactica.service.annotations.BusinessService;
+import io.codelirium.blueground.intergalactica.service.annotation.BusinessService;
 import org.slf4j.Logger;
 import org.springframework.data.domain.Page;
 import javax.inject.Inject;

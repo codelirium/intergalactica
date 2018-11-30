@@ -1,5 +1,6 @@
 package io.codelirium.blueground.intergalactica.controller.handler.business;
 
+import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotSignUpColonistException;
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTSuccessResponseBody;
@@ -18,7 +19,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
-@RestController
+@SecureRestController
 @RequestMapping(API_PATH_ROOT)
 public class ColonistController {
 
