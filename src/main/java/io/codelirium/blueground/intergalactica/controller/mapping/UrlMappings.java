@@ -15,6 +15,8 @@ public class UrlMappings {
 
 	public static final String API_ENDPOINT_TOKENS = "/tokens";
 
+	public static final String API_ENDPOINT_TOKEN_DETAILS = API_ENDPOINT_TOKENS + "/details";
+
 	public static final String API_ENDPOINT_UNITS = "/units";
 
 	public static final String API_ENDPOINT_UNITS_PAGED = API_ENDPOINT_UNITS + "/pages/{" + PATH_PARAM_PAGE + ":[\\d]+}";

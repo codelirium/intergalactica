@@ -1,6 +1,8 @@
 package io.codelirium.blueground.intergalactica.controller.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.codelirium.blueground.intergalactica.controller.exception.CannotGenerateTokenException;
+import io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTFailureResponseBody;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -183,6 +185,12 @@ public class IntergalacticaErrorHandler extends BasicErrorController {
 				body   = failure(e.getClass().getSimpleName(), "The http request method is not supported.");
 
 				status = BAD_REQUEST;
+
+			} else if (e instanceof CannotGenerateTokenException || e instanceof CannotGetTokenDetailsException) {
+
+				body = failure(e.getClass().getSimpleName(), e.getMessage());
+
+				status = UNAUTHORIZED;
 
 			}
 
