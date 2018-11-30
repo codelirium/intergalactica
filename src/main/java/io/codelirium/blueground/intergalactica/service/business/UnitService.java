@@ -46,6 +46,7 @@ public class UnitService {
 
 
 		LOGGER.debug(format("Retrieved %d intergalactic units - page: %d/%d - page size: %d - total units: %d",
+																									unitEntities.getContent().size(),
 																									searchDTO.getPage(),
 																									searchDTO.getTotalPages(),
 																									searchDTO.getPageSize(),
@@ -68,6 +69,7 @@ public class UnitService {
 
 
 		LOGGER.debug(format("Retrieved %d searched intergalactic units - page: %d/%d - page size: %d - total units: %d",
+																									unitEntities.getContent().size(),
 																									searchDTO.getPage(),
 																									searchDTO.getTotalPages(),
 																									searchDTO.getPageSize(),

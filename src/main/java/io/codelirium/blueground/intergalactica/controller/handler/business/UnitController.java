@@ -2,6 +2,7 @@ package io.codelirium.blueground.intergalactica.controller.handler.business;
 
 import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException;
+import io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException;
 import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
 import io.codelirium.blueground.intergalactica.model.dto.pagination.PagedSearchDTO;
@@ -18,7 +19,8 @@ import java.util.Optional;
 import static io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException.MESSAGE_INVALID_OR_MISSING_TOKEN;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.*;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
-import static io.codelirium.blueground.intergalactica.model.entity.UnitEntity.COLUMN_NAME_ID;
+import static io.codelirium.blueground.intergalactica.model.entity.UnitEntity.FIELD_NAME_REGION;
+import static io.codelirium.blueground.intergalactica.model.entity.base.PersistableBaseEntity.FIELD_NAME_ID;
 import static java.util.Objects.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.OK;
@@ -55,12 +57,12 @@ public class UnitController {
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 
-			throw new CannotGetUnitsException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+			throw new CannotValidateTokenException(MESSAGE_INVALID_OR_MISSING_TOKEN);
 
 		}
 
 
-		final PagedSearchDTO searchDTO = new PagedSearchDTO(page, COLUMN_NAME_ID);
+		final PagedSearchDTO searchDTO = new PagedSearchDTO(page, FIELD_NAME_ID);
 
 
 		Collection<UnitDTO> unitDTOS;
@@ -96,12 +98,12 @@ public class UnitController {
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 
-			throw new CannotGetUnitsException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+			throw new CannotValidateTokenException(MESSAGE_INVALID_OR_MISSING_TOKEN);
 
 		}
 
 
-		final PagedSearchDTO searchDTO = new PagedSearchDTO(page, COLUMN_NAME_ID);
+		final PagedSearchDTO searchDTO = new PagedSearchDTO(page, FIELD_NAME_REGION);
 
 
 		Collection<UnitDTO> unitDTOS;

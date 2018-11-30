@@ -27,7 +27,8 @@ public class UnitEntity extends PersistableBaseEntity<Long> implements Serializa
 	private static final long serialVersionUID = -2589170530443760063L;
 
 
-	static final String TABLE_NAME = "UNITS";
+	public static final String TABLE_NAME        = "UNITS";
+	public static final String FIELD_NAME_REGION = "region";
 
 
 	@Column(name = "IMAGE", nullable = false)

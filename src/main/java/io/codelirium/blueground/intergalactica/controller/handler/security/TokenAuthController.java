@@ -1,8 +1,7 @@
 package io.codelirium.blueground.intergalactica.controller.handler.security;
 
 import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
-import io.codelirium.blueground.intergalactica.controller.exception.CannotGenerateTokenException;
-import io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException;
+import io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException;
 import io.codelirium.blueground.intergalactica.controller.handler.business.ColonistController;
 import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTSuccessResponseBody;
@@ -51,7 +50,7 @@ public class TokenAuthController {
 
 		if (!optionalTokenDTO.isPresent()) {
 
-			throw new CannotGenerateTokenException(MESSAGE_CANNOT_GENERATE_TOKEN);
+			throw new CannotValidateTokenException(MESSAGE_CANNOT_GENERATE_TOKEN);
 
 		}
 
@@ -75,7 +74,7 @@ public class TokenAuthController {
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 
-			throw new CannotGetTokenDetailsException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+			throw new CannotValidateTokenException(MESSAGE_INVALID_OR_MISSING_TOKEN);
 
 		}
 
@@ -88,6 +87,5 @@ public class TokenAuthController {
 
 
 		return new ResponseEntity<>(body, OK);
-
 	}
 }

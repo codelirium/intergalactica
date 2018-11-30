@@ -1,8 +1,7 @@
 package io.codelirium.blueground.intergalactica.controller.error;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.codelirium.blueground.intergalactica.controller.exception.CannotGenerateTokenException;
-import io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException;
+import io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTFailureResponseBody;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -186,7 +185,7 @@ public class IntergalacticaErrorHandler extends BasicErrorController {
 
 				status = BAD_REQUEST;
 
-			} else if (e instanceof CannotGenerateTokenException || e instanceof CannotGetTokenDetailsException) {
+			} else if (e instanceof CannotValidateTokenException) {
 
 				body = failure(e.getClass().getSimpleName(), e.getMessage());
 
