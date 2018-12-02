@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS COLONISTS (
 	ID               BIGSERIAL PRIMARY KEY CONSTRAINT no_null NOT NULL,
-	USERNAME         TEXT                  CONSTRAINT no_null NOT NULL,
+	PROFILE_NAME     TEXT                  CONSTRAINT no_null NOT NULL,
 	INTERGALACTIC_ID TEXT                  CONSTRAINT no_null NOT NULL,
 	PASSWORD_HASH    TEXT                  CONSTRAINT no_null NOT NULL
 );

@@ -25,8 +25,11 @@ public class RoleEntity extends PersistableBaseEntity<Long> implements Serializa
 	private static final long serialVersionUID = -6416235917914445528L;
 
 
-	static final String TABLE_NAME                   = "ROLES";
-	static final String COLUMN_NAME_INTERGALACTIC_ID = "INTERGALACTIC_ID";
+	public static final String TABLE_NAME                   = "ROLES";
+	public static final String COLUMN_NAME_INTERGALACTIC_ID = "INTERGALACTIC_ID";
+
+
+	public static enum Roles { ADMIN, USER }
 
 
 	@Column(name = COLUMN_NAME_INTERGALACTIC_ID, nullable = false)

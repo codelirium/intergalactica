@@ -1,6 +1,6 @@
 package io.codelirium.blueground.intergalactica.service.security;
 
-import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
+import io.codelirium.blueground.intergalactica.model.dto.TokenProfileDTO;
 import io.codelirium.blueground.intergalactica.service.annotation.SecurityService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -24,11 +24,11 @@ public class SecurityContextService {
 	}
 
 
-	public Optional<TokenDTO> getPrincipal() {
+	public Optional<TokenProfileDTO> getPrincipal() {
 
 		final Optional<Authentication> optionalAuthentication = getAuthentication();
 
 
-		return optionalAuthentication.isPresent() ? ofNullable((TokenDTO) optionalAuthentication.get().getPrincipal()) : empty();
+		return optionalAuthentication.isPresent() ? ofNullable((TokenProfileDTO) optionalAuthentication.get().getPrincipal()) : empty();
 	}
 }

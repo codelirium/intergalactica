@@ -3,6 +3,7 @@ package io.codelirium.blueground.intergalactica.model.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -18,30 +19,26 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Data
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
+public class TokenProfileDTO implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = -6031979811450129600L;
 
 
+	private String profileName;
+
+	private String uniqueId;
+
+	private String password;
+
 	private String token;
 
-
-	public TokenDTO(final String token) {
-
-		this.token = token;
-
-	}
+	private List<SimpleGrantedAuthority> authorities;
 
 
-	public TokenDTO(final String username,
-					final String intergalacticId,
-					final String passwordHash,
-					final String token,
-					final List<SimpleGrantedAuthority> authorities) {
-
-		super(username, intergalacticId, passwordHash, authorities);
+	public TokenProfileDTO(final String token) {
 
 		this.token = token;
 
@@ -49,16 +46,10 @@ public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
 
 
 	@Override
+	@JsonIgnore
 	public String getUsername() {
 
-		return super.getUsername();
-
-	}
-
-
-	public String getIntergalacticId() {
-
-		return super.getIntergalacticId();
+		return uniqueId;
 
 	}
 
@@ -67,15 +58,7 @@ public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
 	@JsonIgnore
 	public String getPassword() {
 
-		return super.getPasswordHash();
-
-	}
-
-
-	@JsonIgnore
-	public String getPasswordHash() {
-
-		return super.getPasswordHash();
+		return password;
 
 	}
 
@@ -83,7 +66,7 @@ public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
 	@Override
 	public List<SimpleGrantedAuthority> getAuthorities() {
 
-		return super.getAuthorities();
+		return authorities;
 
 	}
 
@@ -126,9 +109,9 @@ public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
 
 	public static class Builder {
 
-		public String username;
+		public String profileName;
 
-		public String intergalacticId;
+		public String uniqueId;
 
 		public String passwordHash;
 
@@ -145,9 +128,9 @@ public class TokenDTO extends ColonistDTO implements UserDetails, Serializable {
 		}
 
 
-		public TokenDTO build() {
+		public TokenProfileDTO build() {
 
-			return new TokenDTO(username, intergalacticId, passwordHash, token, authorities);
+			return new TokenProfileDTO(profileName, uniqueId, passwordHash, token, authorities);
 
 		}
 	}

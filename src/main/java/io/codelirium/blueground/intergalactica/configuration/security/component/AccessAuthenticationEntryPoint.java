@@ -35,7 +35,7 @@ public class AccessAuthenticationEntryPoint extends BasicAuthenticationEntryPoin
 
 
 	@Inject
-	public AccessAuthenticationEntryPoint(final ObjectMapper objectMapper, @Value("${security.basic.realm:default}") final String realm) {
+	public AccessAuthenticationEntryPoint(final ObjectMapper objectMapper, @Value("${security.basic.realm:intergalactica}") final String realm) {
 
 		this.objectMapper = objectMapper;
 

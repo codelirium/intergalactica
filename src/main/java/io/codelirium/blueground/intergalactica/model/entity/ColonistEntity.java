@@ -30,8 +30,8 @@ public class ColonistEntity extends PersistableBaseEntity<Long> implements Seria
 	private static final String COLUMN_NAME_INTERGALACTIC_ID = "INTERGALACTIC_ID";
 
 
-	@Column(name = "USERNAME", nullable = false)
-	private String username;
+	@Column(name = "PROFILE_NAME", nullable = false)
+	private String profileName;
 
 	@Column(name = COLUMN_NAME_INTERGALACTIC_ID, nullable = false)
 	private String intergalacticId;
@@ -46,7 +46,7 @@ public class ColonistEntity extends PersistableBaseEntity<Long> implements Seria
 
 	public static class Builder {
 
-		public String username;
+		public String profileName;
 
 		public String intergalacticId;
 
@@ -65,7 +65,7 @@ public class ColonistEntity extends PersistableBaseEntity<Long> implements Seria
 
 		public ColonistEntity build() {
 
-			return new ColonistEntity(username, intergalacticId, passwordHash, roles);
+			return new ColonistEntity(profileName, intergalacticId, passwordHash, roles);
 
 		}
 	}

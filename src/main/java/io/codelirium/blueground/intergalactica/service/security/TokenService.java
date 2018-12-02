@@ -61,7 +61,7 @@ public class TokenService {
 
 		return create()
 				.withIssuer(issuer)
-				.withSubject(colonistDTO.getUsername())
+				.withSubject(colonistDTO.getProfileName())
 				.withIssuedAt(from(now.atZone(systemDefault()).toInstant()))
 				.withExpiresAt(from(now.plusSeconds(tokenProperties.getMaxAgeSeconds()).atZone(systemDefault()).toInstant()))
 				.withArrayClaim(FIELD_ROLE, colonistDTO.getAuthorities()

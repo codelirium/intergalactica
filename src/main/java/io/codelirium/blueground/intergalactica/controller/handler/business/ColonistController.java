@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotSignUpColonistException.EXPRESSION_ID_USER_EXISTS;
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotSignUpColonistException.MESSAGE_UID_EXISTS;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_ENDPOINT_COLONISTS;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_PATH_ROOT;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
@@ -48,6 +50,13 @@ public class ColonistController {
 			signedUpColonistDTO = colonistService.signUp(colonistDTO);
 
 		} catch (final Exception e) {
+
+			if (e.getMessage().toLowerCase().contains(EXPRESSION_ID_USER_EXISTS)) {
+
+				throw new CannotSignUpColonistException(MESSAGE_UID_EXISTS, e.getCause());
+
+			}
+
 
 			throw new CannotSignUpColonistException(e.getMessage(), e.getCause());
 

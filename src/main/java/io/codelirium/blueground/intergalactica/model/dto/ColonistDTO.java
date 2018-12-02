@@ -1,7 +1,9 @@
 package io.codelirium.blueground.intergalactica.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.List;
@@ -19,22 +21,54 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ColonistDTO {
 
-	private String username;
+	private String profileName;
 
 	private String intergalacticId;
 
-	private String passwordHash;
+	private String password;
 
 	private List<SimpleGrantedAuthority> authorities;
 
 
+	@JsonIgnore
+	public String getPassword() {
+
+		return password;
+
+	}
+
+
+	@JsonProperty
+	public void setPassword(final String password) {
+
+		this.password = password;
+
+	}
+
+
+	@JsonProperty
+	public List<SimpleGrantedAuthority> getAuthorities() {
+
+		return authorities;
+
+	}
+
+
+	@JsonIgnore
+	public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
+
+		this.authorities = authorities;
+
+	}
+
+
 	public static class Builder {
 
-		public String username;
+		public String profileName;
 
 		public String intergalacticId;
 
-		public String passwordHash;
+		public String password;
 
 		public List<SimpleGrantedAuthority> authorities;
 
@@ -49,7 +83,7 @@ public class ColonistDTO {
 
 		public ColonistDTO build() {
 
-			return new ColonistDTO(username, intergalacticId, passwordHash, authorities);
+			return new ColonistDTO(profileName, intergalacticId, password, authorities);
 
 		}
 	}

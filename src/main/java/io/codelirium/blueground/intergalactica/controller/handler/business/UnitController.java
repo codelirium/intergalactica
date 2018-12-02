@@ -3,7 +3,7 @@ package io.codelirium.blueground.intergalactica.controller.handler.business;
 import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException;
-import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
+import io.codelirium.blueground.intergalactica.model.dto.TokenProfileDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
 import io.codelirium.blueground.intergalactica.model.dto.pagination.PagedSearchDTO;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTSuccessResponseBody;
@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
 
-import static io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException.MESSAGE_INVALID_OR_MISSING_TOKEN;
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException.MESSAGE_INVALID_OR_MISSING_TOKEN;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.*;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
 import static io.codelirium.blueground.intergalactica.model.entity.UnitEntity.FIELD_NAME_REGION;
@@ -53,7 +53,7 @@ public class UnitController {
 	@GetMapping(value = API_ENDPOINT_UNITS_PAGED, produces = APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<UnitDTO>> getAllPaged(@PathVariable(PATH_PARAM_PAGE) final int page) {
 
-		final Optional<TokenDTO> optionalTokenDTO = securityContextService.getPrincipal();
+		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 
@@ -94,7 +94,7 @@ public class UnitController {
 	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<UnitDTO>> searchByTermPaged( @PathVariable(PATH_PARAM_PAGE) final int page,
 																							 @RequestParam(REQ_PARAM_SEARCH_TERM) final String searchTerm) {
 
-		final Optional<TokenDTO> optionalTokenDTO = securityContextService.getPrincipal();
+		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 

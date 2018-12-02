@@ -5,12 +5,15 @@ import io.codelirium.blueground.intergalactica.repository.ColonistRepository;
 import io.codelirium.blueground.intergalactica.service.annotation.BusinessService;
 import io.codelirium.blueground.intergalactica.util.mapper.MapperUtil;
 import org.slf4j.Logger;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.inject.Inject;
 import java.util.Optional;
 
+import static io.codelirium.blueground.intergalactica.model.entity.RoleEntity.Roles.USER;
 import static io.codelirium.blueground.intergalactica.util.mapper.MapperUtil.toColonistEntity;
 import static java.lang.String.format;
+import static java.util.Collections.singletonList;
 import static java.util.Optional.of;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.util.Assert.notNull;
@@ -45,7 +48,8 @@ public class ColonistService {
 		LOGGER.debug(format("Registering new colonist with intergalactic id: [%s]", colonistDTO.getIntergalacticId()));
 
 
-		colonistDTO.setPasswordHash(passwordEncoder.encode(colonistDTO.getPasswordHash()));
+		colonistDTO.setPassword(passwordEncoder.encode(colonistDTO.getPassword()));
+		colonistDTO.setAuthorities(singletonList(new SimpleGrantedAuthority(USER.name())));
 
 
 		return of(colonistRepository.saveAndFlush(toColonistEntity(colonistDTO)))

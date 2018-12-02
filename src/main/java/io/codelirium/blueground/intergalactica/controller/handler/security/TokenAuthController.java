@@ -3,7 +3,7 @@ package io.codelirium.blueground.intergalactica.controller.handler.security;
 import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException;
 import io.codelirium.blueground.intergalactica.controller.handler.business.ColonistController;
-import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
+import io.codelirium.blueground.intergalactica.model.dto.TokenProfileDTO;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTSuccessResponseBody;
 import io.codelirium.blueground.intergalactica.service.security.SecurityContextService;
 import org.slf4j.Logger;
@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import java.util.Optional;
 
 import static io.codelirium.blueground.intergalactica.controller.exception.CannotGenerateTokenException.MESSAGE_CANNOT_GENERATE_TOKEN;
-import static io.codelirium.blueground.intergalactica.controller.exception.CannotGetTokenDetailsException.MESSAGE_INVALID_OR_MISSING_TOKEN;
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException.MESSAGE_INVALID_OR_MISSING_TOKEN;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.*;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
 import static io.codelirium.blueground.intergalactica.util.mapper.MapperUtil.toPlainToken;
@@ -44,9 +44,9 @@ public class TokenAuthController {
 
 	@ResponseStatus(OK)
 	@GetMapping(value = API_ENDPOINT_TOKENS, produces = APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<TokenDTO>> getToken() {
+	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<TokenProfileDTO>> getToken() {
 
-		final Optional<TokenDTO> optionalTokenDTO = securityContextService.getPrincipal();
+		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();
 
 		if (!optionalTokenDTO.isPresent()) {
 
@@ -57,7 +57,7 @@ public class TokenAuthController {
 
 		LOGGER.debug("Building response for token generation ...");
 
-		final RESTSuccessResponseBody<TokenDTO> body = success(TokenDTO.class.getSimpleName(), singletonList(toPlainToken(optionalTokenDTO.get().getToken())));
+		final RESTSuccessResponseBody<TokenProfileDTO> body = success(TokenProfileDTO.class.getSimpleName(), singletonList(toPlainToken(optionalTokenDTO.get().getToken())));
 
 		LOGGER.debug("Response body for token generation was built successfully.");
 
@@ -68,9 +68,9 @@ public class TokenAuthController {
 
 	@ResponseStatus(OK)
 	@GetMapping(value = API_ENDPOINT_TOKEN_DETAILS, produces = APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<TokenDTO>> getTokenDetails() {
+	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<TokenProfileDTO>> getTokenProfile() {
 
-		final Optional<TokenDTO> optionalTokenDTO = securityContextService.getPrincipal();
+		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();
 
 		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
 
@@ -79,11 +79,11 @@ public class TokenAuthController {
 		}
 
 
-		LOGGER.debug("Building response for token details retrieval ...");
+		LOGGER.debug("Building response for token profile retrieval ...");
 
-		final RESTSuccessResponseBody<TokenDTO> body = success(TokenDTO.class.getSimpleName(), singletonList(optionalTokenDTO.get()));
+		final RESTSuccessResponseBody<TokenProfileDTO> body = success(TokenProfileDTO.class.getSimpleName(), singletonList(optionalTokenDTO.get()));
 
-		LOGGER.debug("Response body for token details retrieval was built successfully.");
+		LOGGER.debug("Response body for token profile retrieval was built successfully.");
 
 
 		return new ResponseEntity<>(body, OK);

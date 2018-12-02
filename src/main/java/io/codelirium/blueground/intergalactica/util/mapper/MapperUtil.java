@@ -2,7 +2,7 @@ package io.codelirium.blueground.intergalactica.util.mapper;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
-import io.codelirium.blueground.intergalactica.model.dto.TokenDTO;
+import io.codelirium.blueground.intergalactica.model.dto.TokenProfileDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
 import io.codelirium.blueground.intergalactica.model.entity.ColonistEntity;
 import io.codelirium.blueground.intergalactica.model.entity.RoleEntity;
@@ -25,26 +25,26 @@ public class MapperUtil {
 	private MapperUtil() { }
 
 
-	public static TokenDTO toPlainToken(final String token) {
+	public static TokenProfileDTO toPlainToken(final String token) {
 
 		notNull(token, "The token cannot be null.");
 
 
-		return new TokenDTO(token);
+		return new TokenProfileDTO(token);
 
 	}
 
 
-	public static TokenDTO toTokenDTO(final DecodedJWT token, final String credentials) {
+	public static TokenProfileDTO toTokenDTO(final DecodedJWT token, final String credentials) {
 
 		notNull(token, "The decoded JWT cannot be null.");
 		notNull(credentials, "The credentials cannot be null.");
 
 
-		return new TokenDTO.Builder()
+		return new TokenProfileDTO.Builder()
 				.with($ -> {
-					$.username        = token.getSubject();
-					$.intergalacticId = token.getClaim(FIELD_USER).asString();
+					$.profileName     = token.getSubject();
+					$.uniqueId        = token.getClaim(FIELD_USER).asString();
 					$.passwordHash    = credentials;
 					$.token           = token.getToken();
 					$.authorities     = token.getClaim(FIELD_ROLE)
@@ -57,19 +57,19 @@ public class MapperUtil {
 	}
 
 
-	public static TokenDTO toTokenDTO(final ColonistDTO colonistDTO, final String token) {
+	public static TokenProfileDTO toTokenDTO(final ColonistDTO colonistDTO, final String token) {
 
 		notNull(colonistDTO, "The colonist DTO cannot be null.");
 		notNull(token, "The token cannot be null.");
 
 
-		return new TokenDTO.Builder()
+		return new TokenProfileDTO.Builder()
 				.with($ -> {
-					$.username        = colonistDTO.getUsername();
-					$.intergalacticId = colonistDTO.getIntergalacticId();
-					$.passwordHash    = colonistDTO.getPasswordHash();
-					$.token           = token;
-					$.authorities     = colonistDTO.getAuthorities();
+					$.profileName  = colonistDTO.getProfileName();
+					$.uniqueId     = colonistDTO.getIntergalacticId();
+					$.passwordHash = colonistDTO.getPassword();
+					$.token        = token;
+					$.authorities  = colonistDTO.getAuthorities();
 				})
 				.build();
 	}
@@ -82,9 +82,9 @@ public class MapperUtil {
 
 		return new ColonistDTO.Builder()
 				.with($ -> {
-					$.username        = colonistEntity.getUsername();
+					$.profileName     = colonistEntity.getProfileName();
 					$.intergalacticId = colonistEntity.getIntergalacticId();
-					$.passwordHash    = colonistEntity.getPasswordHash();
+					$.password        = colonistEntity.getPasswordHash();
 					$.authorities     = toAuthorities(colonistEntity.getRoles());
 				})
 				.build();
@@ -98,9 +98,9 @@ public class MapperUtil {
 
 		return new ColonistEntity.Builder()
 				.with($ -> {
-					$.username        = colonistDTO.getUsername();
+					$.profileName     = colonistDTO.getProfileName();
 					$.intergalacticId = colonistDTO.getIntergalacticId();
-					$.passwordHash    = colonistDTO.getPasswordHash();
+					$.passwordHash    = colonistDTO.getPassword();
 					$.roles           = toRoles($.intergalacticId, colonistDTO.getAuthorities());
 				})
 				.build();
