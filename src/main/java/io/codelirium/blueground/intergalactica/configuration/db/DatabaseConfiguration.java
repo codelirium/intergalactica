@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-import static io.codelirium.blueground.intergalactica.configuration.cache.CacheConfiguration.EHCACHE_XML;
+import static io.codelirium.blueground.intergalactica.configuration.cache.EhCacheConfiguration.EHCACHE_XML;
 import static java.io.File.separator;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;

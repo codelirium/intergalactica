@@ -67,7 +67,7 @@ public class TokenAuthController {
 
 
 	@ResponseStatus(OK)
-	@GetMapping(value = API_ENDPOINT_TOKEN_DETAILS, produces = APPLICATION_JSON_VALUE)
+	@GetMapping(value = API_ENDPOINT_TOKEN_PROFILE, produces = APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<TokenProfileDTO>> getTokenProfile() {
 
 		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();

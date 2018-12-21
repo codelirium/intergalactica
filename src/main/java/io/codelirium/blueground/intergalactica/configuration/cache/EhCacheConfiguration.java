@@ -15,7 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 
 @Configuration
 @EnableCaching
-public class CacheConfiguration extends CachingConfigurerSupport {
+public class EhCacheConfiguration extends CachingConfigurerSupport {
 
 	public static final String EHCACHE_XML = "ehcache.xml";
 

@@ -18,8 +18,9 @@ services:
         environment:
             - POSTGRES_DB=intergalactica-db
             - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=password
+            - POSTGRES_PASSWORD=1n73rg4l4kt1k4
         volumes:
             - ../sql/schema/TABLES.sql:/docker-entrypoint-initdb.d/1-TABLES.sql
             - ../sql/schema/DATA-UNITS.sql:/docker-entrypoint-initdb.d/2-DATA-UNITS.sql
-            - ../sql/schema/DATA-COLONIST.sql:/docker-entrypoint-initdb.d/3-DATA-COLONIST.sql
+            - ../sql/schema/DATA-COLONISTS.sql:/docker-entrypoint-initdb.d/3-DATA-COLONISTS.sql
+            - ../sql/schema/DATA-UNIT-VIEWERS.sql:/docker-entrypoint-initdb.d/4-DATA-UNIT-VIEWERS.sql

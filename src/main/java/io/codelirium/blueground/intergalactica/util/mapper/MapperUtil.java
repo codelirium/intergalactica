@@ -4,9 +4,11 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import io.codelirium.blueground.intergalactica.model.dto.ColonistDTO;
 import io.codelirium.blueground.intergalactica.model.dto.TokenProfileDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
+import io.codelirium.blueground.intergalactica.model.dto.UnitViewersDTO;
 import io.codelirium.blueground.intergalactica.model.entity.ColonistEntity;
 import io.codelirium.blueground.intergalactica.model.entity.RoleEntity;
 import io.codelirium.blueground.intergalactica.model.entity.UnitEntity;
+import io.codelirium.blueground.intergalactica.model.entity.UnitViewersEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -43,11 +45,11 @@ public class MapperUtil {
 
 		return new TokenProfileDTO.Builder()
 				.with($ -> {
-					$.profileName     = token.getSubject();
-					$.uniqueId        = token.getClaim(FIELD_USER).asString();
-					$.passwordHash    = credentials;
-					$.token           = token.getToken();
-					$.authorities     = token.getClaim(FIELD_ROLE)
+					$.profileName  = token.getSubject();
+					$.uniqueId     = token.getClaim(FIELD_USER).asString();
+					$.passwordHash = credentials;
+					$.token        = token.getToken();
+					$.authorities  = token.getClaim(FIELD_ROLE)
 												.asList(String.class)
 																.stream()
 																	.map(SimpleGrantedAuthority::new)
@@ -141,6 +143,7 @@ public class MapperUtil {
 						.stream()
 							.map(unitEntity -> new UnitDTO.Builder()
 									.with($ -> {
+										$.id                 = unitEntity.getId();
 										$.image              = unitEntity.getImage();
 										$.title              = unitEntity.getTitle();
 										$.region             = unitEntity.getRegion();
@@ -152,5 +155,19 @@ public class MapperUtil {
 									})
 									.build())
 							.collect(toCollection(LinkedList::new));
+	}
+
+
+	public static UnitViewersDTO toUnitViewersDTO(final UnitViewersEntity unitViewersEntity) {
+
+		notNull(unitViewersEntity, "The unit viewers entity cannot be null.");
+
+
+		return new UnitViewersDTO.Builder()
+				.with($ -> {
+					$.unitId        = unitViewersEntity.getUnitId();
+					$.activeViewers = unitViewersEntity.getActiveViewers();
+				})
+				.build();
 	}
 }

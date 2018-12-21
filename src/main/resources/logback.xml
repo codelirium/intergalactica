@@ -17,11 +17,23 @@
 		<appender-ref ref="STDOUT"/>
 	</logger>
 
+	<logger name="io.codelirium.blueground.intergalactica.configuration" additivity="false" level="DEBUG">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="io.codelirium.blueground.intergalactica.configuration.tracker" additivity="false" level="DEBUG">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
 	<logger name="org.springframework" additivity="false" level="OFF">
 		<appender-ref ref="STDOUT"/>
 	</logger>
 
-	<logger name="org.springframework.security" additivity="false" level="OFF">
+	<logger name="org.springframework.security" additivity="false" level="DEBUG">
+		<appender-ref ref="STDOUT"/>
+	</logger>
+
+	<logger name="reactor.netty" additivity="false" level="OFF">
 		<appender-ref ref="STDOUT"/>
 	</logger>
 

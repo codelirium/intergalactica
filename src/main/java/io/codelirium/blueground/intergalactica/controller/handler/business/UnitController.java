@@ -2,9 +2,11 @@ package io.codelirium.blueground.intergalactica.controller.handler.business;
 
 import io.codelirium.blueground.intergalactica.controller.annotation.SecureRestController;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotGetUnitsException;
+import io.codelirium.blueground.intergalactica.controller.exception.CannotProcessUnitViewingException;
 import io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException;
 import io.codelirium.blueground.intergalactica.model.dto.TokenProfileDTO;
 import io.codelirium.blueground.intergalactica.model.dto.UnitDTO;
+import io.codelirium.blueground.intergalactica.model.dto.UnitViewersDTO;
 import io.codelirium.blueground.intergalactica.model.dto.pagination.PagedSearchDTO;
 import io.codelirium.blueground.intergalactica.model.dto.response.RESTSuccessResponseBody;
 import io.codelirium.blueground.intergalactica.service.business.UnitService;
@@ -16,11 +18,14 @@ import javax.inject.Inject;
 import java.util.Collection;
 import java.util.Optional;
 
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotProcessUnitViewingException.MESSAGE_FAILED_TO_DECREASE_UNIT_VIEWERS;
+import static io.codelirium.blueground.intergalactica.controller.exception.CannotProcessUnitViewingException.MESSAGE_FAILED_TO_INCREASE_UNIT_VIEWERS;
 import static io.codelirium.blueground.intergalactica.controller.exception.CannotValidateTokenException.MESSAGE_INVALID_OR_MISSING_TOKEN;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.*;
 import static io.codelirium.blueground.intergalactica.model.dto.response.builder.RESTResponseBodyBuilder.success;
 import static io.codelirium.blueground.intergalactica.model.entity.UnitEntity.FIELD_NAME_REGION;
 import static io.codelirium.blueground.intergalactica.model.entity.base.PersistableBaseEntity.FIELD_NAME_ID;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.isNull;
 import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.http.HttpStatus.OK;
@@ -124,6 +129,80 @@ public class UnitController {
 		final RESTSuccessResponseBody<UnitDTO> body = success(UnitDTO.class.getSimpleName(), unitDTOS, searchDTO);
 
 		LOGGER.debug("Paged response body searched for units was built successfully.");
+
+
+		return new ResponseEntity<>(body, OK);
+	}
+
+
+	@ResponseStatus(OK)
+	@PostMapping(value = API_ENDPOINT_UNIT_VIEWERS, produces = APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<UnitViewersDTO>> increaseUnitViewers(@PathVariable(PATH_PARAM_UNIT) final long unitId) {
+
+		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();
+
+		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
+
+			throw new CannotValidateTokenException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+
+		}
+
+
+		final UnitViewersDTO unitViewersDTO;
+
+		try {
+
+			unitViewersDTO = unitService.increaseUnitViewers(unitId);
+
+		} catch (final Exception e) {
+
+			throw new CannotProcessUnitViewingException(MESSAGE_FAILED_TO_INCREASE_UNIT_VIEWERS, e.getCause());
+
+		}
+
+
+		LOGGER.debug("Building response for unit viewer addition ...");
+
+		final RESTSuccessResponseBody<UnitViewersDTO> body = success(UnitViewersDTO.class.getSimpleName(), singletonList(unitViewersDTO));
+
+		LOGGER.debug("Response for unit viewer addition was built successfully.");
+
+
+		return new ResponseEntity<>(body, OK);
+	}
+
+
+	@ResponseStatus(OK)
+	@DeleteMapping(value = API_ENDPOINT_UNIT_VIEWERS, produces = APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<RESTSuccessResponseBody<UnitViewersDTO>> decreaseUnitViewers(@PathVariable(PATH_PARAM_UNIT) final long unitId) {
+
+		final Optional<TokenProfileDTO> optionalTokenDTO = securityContextService.getPrincipal();
+
+		if (!optionalTokenDTO.isPresent() || isNull(optionalTokenDTO.get().getToken())) {
+
+			throw new CannotValidateTokenException(MESSAGE_INVALID_OR_MISSING_TOKEN);
+
+		}
+
+
+		final UnitViewersDTO unitViewersDTO;
+
+		try {
+
+			unitViewersDTO = unitService.decreaseUnitViewers(unitId);
+
+		} catch (final Exception e) {
+
+			throw new CannotProcessUnitViewingException(MESSAGE_FAILED_TO_DECREASE_UNIT_VIEWERS, e.getCause());
+
+		}
+
+
+		LOGGER.debug("Building response for unit viewer removal ...");
+
+		final RESTSuccessResponseBody<UnitViewersDTO> body = success(UnitViewersDTO.class.getSimpleName(), singletonList(unitViewersDTO));
+
+		LOGGER.debug("Response for unit viewer removal was built successfully.");
 
 
 		return new ResponseEntity<>(body, OK);

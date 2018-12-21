@@ -1,8 +1,6 @@
 package io.codelirium.blueground.intergalactica.model.entity.base;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
@@ -15,7 +13,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 @ToString
 @MappedSuperclass
 @EqualsAndHashCode
-public abstract class PersistableBaseEntity<ID extends Serializable> {
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class PersistableBaseEntity<T extends Serializable> {
 
 	public static final String FIELD_NAME_ID  = "id";
 	public static final String COLUMN_NAME_ID = "ID";
@@ -23,15 +23,6 @@ public abstract class PersistableBaseEntity<ID extends Serializable> {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	private ID id;
+	private T id;
 
-
-	public PersistableBaseEntity() { }
-
-
-	public PersistableBaseEntity(final ID id) {
-
-		this.id = id;
-
-	}
 }

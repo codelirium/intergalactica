@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import java.io.Serializable;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,7 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @AllArgsConstructor
 @JsonInclude(NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ColonistDTO {
+public class ColonistDTO implements Serializable {
+
+	private static final long serialVersionUID = 8673864055237191066L;
+
 
 	private String profileName;
 
