@@ -31,7 +31,7 @@ public class UnitViewCounterEventPublisher implements ApplicationListener<UnitVi
 
 
 	@Override
-	public void onApplicationEvent( final UnitViewersEvent event) {
+	public void onApplicationEvent(final UnitViewersEvent event) {
 
 		notNull(event, "The event cannot be null.");
 

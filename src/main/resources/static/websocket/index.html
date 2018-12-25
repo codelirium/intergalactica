@@ -1,0 +1,65 @@
+<html>
+	<head>
+
+		<title>WebSocket - Live Unit Viewers</title>
+
+		<style>
+			#messages {
+				text-align: left;
+				font-family: Courier New;
+				font-size: 12;
+				width: 25%;
+				padding: 1em;
+				border: 1px solid black;
+			};
+		</style>
+	</head>
+	<body>
+		<div class="container">
+
+			<div id="input-fields">
+				<p>
+					JWT Token: <input id="token" width="160" maxlength="259"/>
+					<button id="connectButton">Connect</button>
+					<button id="clearButton">Clear</button>
+				</p>
+			</div>
+
+			<div id="messages" class="messages"></div>
+				<script>
+					const messageWindow = document.getElementById("messages");
+
+					var socket = null;
+
+					connectButton.onclick = function (event) {
+
+						const tokenInput = document.getElementById("token");
+
+						socket = new WebSocket("ws://localhost:8080/api/intergalactica/websocket/units/viewers?token=" + tokenInput.value);
+
+						socket.onopen = function (event) {
+							messageWindow.innerHTML=``;
+							addMessageToWindow("Connected");
+						};
+
+						socket.onmessage = function (event) {
+							addMessageToWindow("Got Message: " + event.data);
+						};
+
+						socket.onclose = function (event) {
+							messageWindow.innerHTML=``;
+							addMessageToWindow("Disconnected");
+						};
+					};
+
+					function addMessageToWindow(message) {
+						messageWindow.innerHTML += `<div>${message}</div>`;
+					}
+
+					clearButton.onclick = function (event) {
+						messageWindow.innerHTML=``;
+					}
+			</script>
+		</div>
+	</body>
+</html>

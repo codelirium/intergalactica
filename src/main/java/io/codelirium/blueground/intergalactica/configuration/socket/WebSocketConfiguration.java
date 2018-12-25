@@ -1,84 +1,36 @@
 package io.codelirium.blueground.intergalactica.configuration.socket;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.codelirium.blueground.intergalactica.component.event.UnitViewCounterEventPublisher;
-import io.codelirium.blueground.intergalactica.model.dto.event.UnitViewersEvent;
-import org.springframework.context.annotation.Bean;
+import io.codelirium.blueground.intergalactica.configuration.socket.component.WebSocketHandler;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.reactive.HandlerMapping;
-import org.springframework.web.reactive.handler.SimpleUrlHandlerMapping;
-import org.springframework.web.reactive.socket.WebSocketHandler;
-import org.springframework.web.reactive.socket.WebSocketMessage;
-import org.springframework.web.reactive.socket.server.support.WebSocketHandlerAdapter;
-import reactor.core.publisher.Flux;
-import java.util.concurrent.Executor;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import javax.inject.Inject;
 
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_PATH_ROOT;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.WEBSOCKET_ENDPOINT_UNIT_VIEWERS;
 import static java.lang.String.format;
-import static java.util.Collections.singletonMap;
-import static java.util.concurrent.Executors.newSingleThreadExecutor;
-import static reactor.core.publisher.Flux.create;
+import static org.springframework.util.Assert.notNull;
 
 
 @Configuration
-public class WebSocketConfiguration {
+@EnableWebSocket
+public class WebSocketConfiguration implements WebSocketConfigurer {
 
-	@Bean
-	public Executor eventSubmitter() {
-
-		return newSingleThreadExecutor();
-
-	}
+	public static final String WEBSOCKET_ENDPOINT = format("%s%s", API_PATH_ROOT, WEBSOCKET_ENDPOINT_UNIT_VIEWERS);
 
 
-	@Bean
-	public HandlerMapping handlerMapping(final WebSocketHandler webSocketHandler) {
-
-		return new SimpleUrlHandlerMapping() {
-			{
-				setUrlMap(singletonMap(format("%s%s", API_PATH_ROOT, WEBSOCKET_ENDPOINT_UNIT_VIEWERS), webSocketHandler));
-				setCorsConfigurations(singletonMap("*", new CorsConfiguration().applyPermitDefaultValues()));
-				setOrder(10);
-			}
-		};
-	}
+	@Inject
+	private WebSocketHandler webSocketHandler;
 
 
-	@Bean
-	public WebSocketHandlerAdapter webSocketHandlerAdapter() {
+	@Override
+	public void registerWebSocketHandlers(final WebSocketHandlerRegistry registry) {
 
-		return new WebSocketHandlerAdapter();
-
-	}
+		notNull(registry, "The web socket registry cannot be null.");
 
 
-	@Bean
-	public WebSocketHandler webSocketHandler(final ObjectMapper objectMapper, final UnitViewCounterEventPublisher eventPublisher) {
+		registry.addHandler(webSocketHandler, WEBSOCKET_ENDPOINT).setAllowedOrigins("*");
 
-		final Flux<UnitViewersEvent> publish = create(eventPublisher).share();
-
-
-		return session -> {
-
-			final Flux<WebSocketMessage> messageFlux = publish.map(event -> {
-
-				try {
-
-					return objectMapper.writeValueAsString(event.getSource());
-
-				} catch (final JsonProcessingException e) {
-
-					throw new RuntimeException(e);
-
-				}
-
-			}).map(session::textMessage);
-
-
-			return session.send(messageFlux);
-		};
 	}
 }

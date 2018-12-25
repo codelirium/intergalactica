@@ -17,7 +17,7 @@
 		<appender-ref ref="STDOUT"/>
 	</logger>
 
-	<logger name="io.codelirium.blueground.intergalactica.configuration" additivity="false" level="DEBUG">
+	<logger name="io.codelirium.blueground.intergalactica.configuration" additivity="false" level="OFF">
 		<appender-ref ref="STDOUT"/>
 	</logger>
 
@@ -29,7 +29,7 @@
 		<appender-ref ref="STDOUT"/>
 	</logger>
 
-	<logger name="org.springframework.security" additivity="false" level="DEBUG">
+	<logger name="org.springframework.security" additivity="false" level="OFF">
 		<appender-ref ref="STDOUT"/>
 	</logger>
 

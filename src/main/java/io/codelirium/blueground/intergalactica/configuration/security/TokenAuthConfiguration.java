@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.preauth.RequestHeaderAuth
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import javax.inject.Inject;
 
+import static io.codelirium.blueground.intergalactica.configuration.socket.WebSocketConfiguration.WEBSOCKET_ENDPOINT;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_ENDPOINT_COLONISTS;
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_PATH_ROOT;
 import static java.lang.String.format;
@@ -50,10 +51,15 @@ public class TokenAuthConfiguration extends WebSecurityConfigurerAdapter {
 		http
 			.antMatcher(colonistsEndpoint)
 				.authorizeRequests()
-			.antMatchers(POST, colonistsEndpoint)
-				.anonymous()
-					.anyRequest()
-						.authenticated()
+					.antMatchers(POST, colonistsEndpoint)
+						.anonymous()
+							.anyRequest()
+								.authenticated()
+			.and()
+				.antMatcher(WEBSOCKET_ENDPOINT)
+					.authorizeRequests()
+						.anyRequest()
+							.authenticated()
 			.and()
 				.exceptionHandling()
 					.defaultAuthenticationEntryPointFor(accessAuthenticationEntryPoint, new AntPathRequestMatcher(colonistsEndpoint))
