@@ -31,8 +31,6 @@ public class UrlMappings {
 
 	public static final String API_ENDPOINT_COLONISTS = "/colonists";
 
-	public static final String WEBSOCKET_ENDPOINT_UNIT_VIEWERS = API_PATH_WEBSOCKET + API_ENDPOINT_UNITS + API_ENDPOINT_VIEWERS;
-
 	public static final String API_ERROR = "/error";
 
 }

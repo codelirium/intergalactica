@@ -13,53 +13,81 @@
 				border: 1px solid black;
 			};
 		</style>
+
 	</head>
-	<body>
+	<body onload="disconnect();">
 		<div class="container">
 
 			<div id="input-fields">
 				<p>
 					JWT Token: <input id="token" width="160" maxlength="259"/>
-					<button id="connectButton">Connect</button>
-					<button id="clearButton">Clear</button>
+					<button id="connectButton" onclick="connect();">Connect</button>
+					<button id="clearButton" onclick="clearWindow();">Clear</button>
 				</p>
 			</div>
 
 			<div id="messages" class="messages"></div>
-				<script>
-					const messageWindow = document.getElementById("messages");
 
-					var socket = null;
+			<script src="https://cdn.jsdelivr.net/sockjs/0.3.4/sockjs.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-					connectButton.onclick = function (event) {
+			<script type="text/javascript">
 
-						const tokenInput = document.getElementById("token");
+			var messageWindow = document.getElementById("messages");
 
-						socket = new WebSocket("ws://localhost:8080/api/intergalactica/websocket/units/viewers?token=" + tokenInput.value);
+			var stompClient = null;
 
-						socket.onopen = function (event) {
-							messageWindow.innerHTML=``;
-							addMessageToWindow("Connected");
-						};
+			function setConnected(connected) {
 
-						socket.onmessage = function (event) {
-							addMessageToWindow("Got Message: " + event.data);
-						};
+				clearWindow();
 
-						socket.onclose = function (event) {
-							messageWindow.innerHTML=``;
-							addMessageToWindow("Disconnected");
-						};
-					};
+				if (connected) {
+					addMessageToWindow("Connected");
+				} else {
+					addMessageToWindow("Disconnected");
+				}
+			}
 
-					function addMessageToWindow(message) {
-						messageWindow.innerHTML += `<div>${message}</div>`;
-					}
+			function connect() {
 
-					clearButton.onclick = function (event) {
-						messageWindow.innerHTML=``;
-					}
-			</script>
+				const tokenInput = document.getElementById("token");
+
+				const socket = new WebSocket("ws://localhost:8080/api/intergalactica/websocket?token=" + tokenInput.value);
+
+				stompClient = Stomp.over(socket);
+
+				stompClient.connect({}, function(frame) {
+
+					setConnected(true);
+
+					stompClient.subscribe("/topic/unit-viewers-counter", function(messageOutput) {
+						addMessageToWindow(messageOutput.body);
+					});
+				});
+
+				socket.onclose = function() {
+					disconnect();
+				};
+			}
+
+			function disconnect() {
+
+				if(stompClient != null) {
+					stompClient.disconnect();
+				}
+
+				setConnected(false);
+			}
+
+			function clearWindow(){
+				messageWindow.innerHTML=``;
+			}
+
+			function addMessageToWindow(message) {
+				messageWindow.innerHTML += `<div>${message}</div>`;
+			}
+		</script>
+
 		</div>
 	</body>
 </html>

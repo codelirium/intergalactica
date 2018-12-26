@@ -7,14 +7,15 @@ services:
             dockerfile: docker/Dockerfile
         image: intergalactic-unit-service
         ports:
-            - "8080:8080"
+            - 8080:8080
         depends_on:
             - postgres
+            - rabbitmq-stomp
     postgres:
         container_name: postgres
-        image: postgres
+        image: postgres:latest
         ports:
-            - "5432:5432"
+            - 5432:5432
         environment:
             - POSTGRES_DB=intergalactica-db
             - POSTGRES_USER=postgres
@@ -24,3 +25,13 @@ services:
             - ../sql/schema/DATA-UNITS.sql:/docker-entrypoint-initdb.d/2-DATA-UNITS.sql
             - ../sql/schema/DATA-COLONISTS.sql:/docker-entrypoint-initdb.d/3-DATA-COLONISTS.sql
             - ../sql/schema/DATA-UNIT-VIEWERS.sql:/docker-entrypoint-initdb.d/4-DATA-UNIT-VIEWERS.sql
+    rabbitmq-stomp:
+        container_name: rabbitmq-stomp
+        image: jorgeacetozi/rabbitmq-stomp:3.6
+        ports:
+            - 5672:5672
+            - 15672:15672
+            - 61613:61613
+        environment:
+            - "RABBITMQ_DEFAULT_USER=rabbitmq"
+            - "RABBITMQ_DEFAULT_PASS=1n73rg4l4kt1k4"

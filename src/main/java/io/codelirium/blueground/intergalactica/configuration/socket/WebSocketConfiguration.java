@@ -1,36 +1,52 @@
 package io.codelirium.blueground.intergalactica.configuration.socket;
 
-import io.codelirium.blueground.intergalactica.configuration.socket.component.WebSocketHandler;
+import io.codelirium.blueground.intergalactica.configuration.socket.component.BrokerProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import javax.inject.Inject;
 
 import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_PATH_ROOT;
-import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.WEBSOCKET_ENDPOINT_UNIT_VIEWERS;
+import static io.codelirium.blueground.intergalactica.controller.mapping.UrlMappings.API_PATH_WEBSOCKET;
 import static java.lang.String.format;
-import static org.springframework.util.Assert.notNull;
 
 
 @Configuration
-@EnableWebSocket
-public class WebSocketConfiguration implements WebSocketConfigurer {
+@EnableWebSocketMessageBroker
+public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer {
 
-	public static final String WEBSOCKET_ENDPOINT = format("%s%s", API_PATH_ROOT, WEBSOCKET_ENDPOINT_UNIT_VIEWERS);
+	public static final String WEBSOCKET_ENDPOINT = format("%s%s", API_PATH_ROOT, API_PATH_WEBSOCKET);
+
+	public static final String BROKER_BASE_TOPIC = "/topic";
 
 
 	@Inject
-	private WebSocketHandler webSocketHandler;
+	private BrokerProperties properties;
 
 
 	@Override
-	public void registerWebSocketHandlers(final WebSocketHandlerRegistry registry) {
+	public void configureMessageBroker(final MessageBrokerRegistry registry) {
 
-		notNull(registry, "The web socket registry cannot be null.");
+		registry
+			.enableStompBrokerRelay(BROKER_BASE_TOPIC)
+			.setRelayHost(properties.getHostname())
+			.setRelayPort(properties.getPort())
+			.setSystemLogin(properties.getUsername())
+			.setSystemPasscode(properties.getPassword())
+			.setClientLogin(properties.getUsername())
+			.setClientPasscode(properties.getPassword());
+
+	}
 
 
-		registry.addHandler(webSocketHandler, WEBSOCKET_ENDPOINT).setAllowedOrigins("*");
+	@Override
+	public void registerStompEndpoints(final StompEndpointRegistry registry) {
+
+		registry
+			.addEndpoint(WEBSOCKET_ENDPOINT)
+			.setAllowedOrigins("*");
 
 	}
 }
